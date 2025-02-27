@@ -8,7 +8,7 @@ import java.util.HashSet;
 
 @Service
 public class ExaminerServiceImpl implements QuestionService {
-    private final QuestionService questionService;
+    QuestionService questionService;
 
     public ExaminerServiceImpl(QuestionService questionService) {
         this.questionService = questionService;

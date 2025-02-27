@@ -2,15 +2,11 @@ package pro.sky.java.course2.examinerservice.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import pro.sky.java.course2.examinerservice.domain.Question;
 
 import java.util.Collection;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class JavaQuestionServiceTest {
-    @Mock
     JavaQuestionService service;
 
     @Test
@@ -21,9 +17,22 @@ class JavaQuestionServiceTest {
     }
 
     @Test
+    void whenAddWitchQuestionAndAnswerIsNotEmpty_ThenJavaServiceReturnsResults() {
+        String question = "Question";
+        String answer = "Answer";
+        Assertions.assertDoesNotThrow(() -> service.add(question, answer));
+    }
+
+    @Test
     void whenAddWitchQuestionIsNull_ThenJavaServiceReturnsResults() {
         Question question = null;
         Assertions.assertThrows(IllegalArgumentException.class, () -> service.add(question));
+    }
+
+    @Test
+    void whenAddWitchQuestionIsNotNull_ThenJavaServiceReturnsResults() {
+        Question question = new Question("Question", "Answer");
+        Assertions.assertNotNull(service.add(question));
     }
 
     @Test
@@ -33,9 +42,21 @@ class JavaQuestionServiceTest {
     }
 
     @Test
+    void whenRemoveWitchQuestionIsNotNull_ThenJavaServiceReturnsResults() {
+        Question question = new Question("Question", "Answer");;
+        Assertions.assertNotNull(service.remove(question));
+    }
+
+    @Test
     void whenGetAllIsNull_ThenJavaServiceReturnsResults() {
         Collection<Question> questions = null;
         Assertions.assertThrows(IllegalArgumentException.class, () -> service.getAll());
+    }
+
+    @Test
+    void whenGetAllIsNotNull_ThenJavaServiceReturnsResults() {
+        Collection<Question> result = service.getAll();
+        Assertions.assertNotNull(result);
     }
 
     @Test

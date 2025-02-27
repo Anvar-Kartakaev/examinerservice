@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class JavaQuestionService implements QuestionService {
@@ -14,25 +15,31 @@ public class JavaQuestionService implements QuestionService {
 
     public JavaQuestionService() {
         questions = new HashSet<>();
+        addTestQuestions();
+    }
+
+    public void addTestQuestions() {
+        questions.add(new Question("Вопрос номер один", "Ответ на вопрос номер один"));
+        questions.add(new Question("Вопрос номер два", "Ответ на вопрос номер два"));
+        questions.add(new Question("Вопрос номер три", "Ответ на вопрос номер три"));
     }
 
     @Override
     public Question add(String question, String answer) {
-        Question result = new Question(question, answer);
-        questions.add(result);
-        return result;
+        questions.add(new Question(question, answer));
+        return new Question(question, answer);
     }
 
     @Override
     public Question add(Question question) {
         questions.add(question);
-        return question;
+        return new Question(question.getQuestion(), question.getAnswer());
     }
 
     @Override
     public Question remove(Question question) {
         questions.remove(question);
-        return question;
+        return new Question(question.getQuestion(), question.getAnswer());
     }
 
     @Override

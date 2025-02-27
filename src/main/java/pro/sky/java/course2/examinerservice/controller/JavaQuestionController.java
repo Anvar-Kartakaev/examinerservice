@@ -5,31 +5,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pro.sky.java.course2.examinerservice.domain.Question;
-import pro.sky.java.course2.examinerservice.service.QuestionService;
+import pro.sky.java.course2.examinerservice.service.JavaQuestionService;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/exam/java")
 public class JavaQuestionController {
-    QuestionService service;
+    private final JavaQuestionService javaQuestionService;
+
+    public JavaQuestionController(JavaQuestionService javaQuestionService) {
+        this.javaQuestionService = javaQuestionService;
+    }
 
     @GetMapping
     public Collection<Question> getQuestions() {
-        return service.getAll();
+        return javaQuestionService.getAll().stream().toList();
     }
 
-    @GetMapping("/exam/java/add")
+    @GetMapping("/add")
     public Question addQuestion(@RequestParam String question, String answer) {
-        return new Question(question, answer);
+        return javaQuestionService.add(question, answer);
     }
 
-    @GetMapping("/exam/java/remove")
+    @GetMapping("/remove")
     public Question removeQuestion(@RequestParam String question, String answer) {
-        return (Question) service.getAll().stream()
-                .filter(service -> getQuestions().removeIf(q -> q.getQuestion().equalsIgnoreCase(question) && q.getAnswer().equalsIgnoreCase(answer)))
-                .collect(Collectors.toSet());
+        javaQuestionService.getAll().stream().
+                filter(q -> q.getQuestion().equalsIgnoreCase(question) && q.getAnswer().equalsIgnoreCase(answer))
+                .findFirst().ifPresent(javaQuestionService::remove);
+        return null;
     }
 
 }
